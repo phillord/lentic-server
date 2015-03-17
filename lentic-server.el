@@ -43,7 +43,7 @@
 ;;;###autoload
 (defun lentic-server-start ()
   (interactive)
-  (setq lentic-server--start
+  (setq lentic-server--server
         (ws-start
          (lambda (request)
            (with-slots (process headers) request
