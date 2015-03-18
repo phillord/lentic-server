@@ -1,5 +1,5 @@
 test: install
-	cask install
+	cask exec ert-runner
 
 install:
-	cask exec ert-runner
+	cask install
