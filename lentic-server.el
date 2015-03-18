@@ -50,18 +50,49 @@
              (-let* (((_ package . _)
                       (f-split (cdr (assoc :GET headers))))
                      )
-               (if (not (-contains? (lentic-doc-all-lentic-features)
-                                    package))
-                   (ws-send-404 process)
-                 (lentic-doc-ensure-doc package)
-                 (ws-send-file process
-                               (lentic-doc-package-doc-file package))))))
+               (cond
+                ((not package)
+                 (lentic-ws-send-list process (lentic-doc-all-lentic-features)))
+                ((-contains? (lentic-doc-all-lentic-features)
+                             package)
+                 (progn
+                   (lentic-doc-ensure-doc package)
+                   (ws-send-file process
+                                 (lentic-doc-package-doc-file package))))
+                (t
+                 (ws-send-404))))))
          9010)))
+
+;; this needs to go to web-server!
+(defun lentic-ws-send-list (proc list)
+  "Send a listing of links to PROC.
+The elements in list should be a cons of anchor/link, or a string
+which will be used as both URL and anchor."
+  (ws-response-header proc 200 (cons "Content-type" "text/html"))
+  (process-send-string proc
+    (concat "<ul>"
+            (mapconcat
+             (lambda (f)
+               (if (listp f)
+                   (format "<li><a href=\"%s\">%s</li>"
+                           (cdr f) (car f))
+                 (format "<li><a href=\"%s\">%s</li> "
+                         f f)))
+             list
+             "\n")
+            "</ul>")))
+
 
 ;;;###autoload
 (defun lentic-server-stop ()
   (interactive)
   (ws-stop lentic-server--server))
+
+
+(defun lentic-server-browse ()
+  (interactive)
+  (browse-url-default-browser
+   "http://localhost:9010/")))
 
 (provide 'lentic-server)
 ;;; lentic-server.el ends here
