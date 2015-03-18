@@ -91,6 +91,8 @@ which will be used as both URL and anchor."
 
 (defun lentic-server-browse ()
   (interactive)
+  (unless lentic-server--server
+    (lentic-server-start))
   (browse-url-default-browser
    "http://localhost:9010/"))
 
