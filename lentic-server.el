@@ -92,7 +92,7 @@ which will be used as both URL and anchor."
 (defun lentic-server-browse ()
   (interactive)
   (browse-url-default-browser
-   "http://localhost:9010/")))
+   "http://localhost:9010/"))
 
 (provide 'lentic-server)
 ;;; lentic-server.el ends here
