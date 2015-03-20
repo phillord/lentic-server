@@ -88,7 +88,7 @@ which will be used as both URL and anchor."
   (interactive)
   (ws-stop lentic-server--server))
 
-
+;;;###autoload
 (defun lentic-server-browse ()
   (interactive)
   (unless lentic-server--server
