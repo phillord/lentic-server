@@ -3,3 +3,6 @@ test: install
 
 install:
 	cask install
+
+clean:
+	rm -rf dist
