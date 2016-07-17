@@ -59,6 +59,8 @@
                    (lentic-doc-ensure-doc package)
                    (ws-send-file process
                                  (lentic-doc-package-doc-file package))))
+                ((-contains? lentic-doc-allowed-files package)
+                 (ws-send-file process (locate-file package load-path)))
                 (t
                  (ws-send-404))))))
          9010)))
